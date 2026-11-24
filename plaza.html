@@ -661,6 +661,24 @@ p,li,dd,figcaption{text-wrap:pretty;word-break:auto-phrase}
 .fr-chips button.on{background:var(--gold);color:var(--ink-2);border-color:var(--gold)}
 #fr-cv{width:100%;height:auto;display:block;margin-top:calc(var(--u)*3);border:2px solid var(--line)}
 
+/* 丼もの */
+.gohan{background:var(--ink);color:var(--paper);padding:calc(var(--u)*10) 0 calc(var(--u)*8)}
+.gohan h2{font-family:var(--brush);font-weight:400;font-size:clamp(28px,7vw,44px);margin-bottom:calc(var(--u)*2)}
+.don-grid{display:grid;gap:calc(var(--u)*3);margin-top:calc(var(--u)*4);grid-template-columns:1fr 1fr}
+.don{margin:0;background:var(--wood);border:2px solid var(--ink-2)}
+.don img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.don figcaption{padding:12px 12px 16px;display:flex;flex-direction:column;gap:4px}
+.don b{font-family:var(--mincho);font-size:clamp(15px,4vw,19px);line-height:1.3}
+.don-p{font-family:var(--brush);font-size:26px;color:var(--gold);line-height:1.2}
+.don-d{font-size:13px;line-height:1.6;color:rgba(241,231,211,.85)}
+.don-king{border:3px dashed var(--gold);padding:calc(var(--u)*2);display:flex;flex-direction:column;justify-content:center;gap:6px;grid-column:span 2}
+.don-king b{font-family:var(--mincho);font-size:clamp(18px,5vw,24px);color:var(--gold)}
+.don-soon{font-family:var(--brush);font-size:clamp(22px,6vw,30px);color:#fff}
+.gohan .note{margin-top:calc(var(--u)*3)}
+@media (min-width:860px){.don-grid{grid-template-columns:repeat(4,1fr)}.don-king{grid-column:auto}}
+.gohan .note{color:rgba(241,231,211,.8)}
+.don-king{grid-column:auto}.don-king p{font-size:14px;line-height:1.6}.don-soon{font-size:clamp(18px,5vw,24px)!important}
+
 </style>
 </head>
 <body>
@@ -932,19 +950,23 @@ p,li,dd,figcaption{text-wrap:pretty;word-break:auto-phrase}
   var Q=[
     {q:'おなかの具合は?',a:[['ぺこぺこ','big'],['ふつう','mid']]},
     {q:'今日の気分は?',a:[['ガツンと行きたい','hard'],['やさしく染みたい','soft']]},
-    {q:'食べ方は?',a:[['スープをごくごく','soup'],['つけて、すする','dip']]}
+    {q:'食べ方は?',a:[['スープをごくごく','soup'],['つけて、すする','dip']]},
+    {q:'今日は、ごほうびにする?',a:[['する(特選)','tok'],['いつも通り','norm']]}
   ];
   var ans=[],qi=0,qbox=document.getElementById('quiz');
   function qrender(){
     if(!qbox)return;
     if(qi>=Q.length){
       var big=ans[0]==='big',hard=ans[1]==='hard',dip=ans[2]==='dip';
-      var d,why;
-      if(dip){d=DISHES[2];why='つけて食べたい気分には、濃厚な煮干しのつけ汁と、冷水で締めた自家製麺。';}
-      else if(hard){d=DISHES[1];why='ガツンと来たい日には、コクが濃くて後味すっきりの濃厚淡麗。';}
-      else{d=DISHES[0];why='やさしく染みたい日には、煮干しがふわっと香る、王道の中華そば。';}
+      var d,why,bi=dip?2:(hard?1:0),tok=ans[3]==='tok';
+      if(dip){why='つけて食べたい気分には、濃厚な煮干しのつけ汁と、冷水で締めた自家製麺。';}
+      else if(hard){why='ガツンと来たい日には、コクが濃くて後味すっきりの濃厚淡麗。';}
+      else{why='やさしく染みたい日には、煮干しがふわっと香る、王道の中華そば。';}
+      d=DISHES[tok?bi+3:bi];
+      if(tok){why='ごほうびの日は、特選に。'+DISHES[bi+3].t[0];}
+      var SIDE=dip?['明太子丼','300円']:(hard?['ねぎチャーシュー丼','350円']:['卵かけご飯(TKG丼)','300円']);
       var size=dip?'つけ麺は基本で225g。大盛りは300gで無料です。':(big?'ぺこぺこなら、大盛り(麺225g)は無料です。':'普通盛りは150gです(大盛り無料)。');
-      qbox.innerHTML='<p class="quiz-r-k">あなたの一杯</p><p class="quiz-r-n"><a href="'+d.u+'">'+esc(d.n)+'</a> <small>'+esc(d.p)+'</small></p><p>'+esc(why)+'</p><p class="note on-dark">'+esc(size)+'</p><p><button class="btn btn-sub" id="quiz-re" type="button">もう一度</button></p>';
+      qbox.innerHTML='<p class="quiz-r-k">あなたの一杯</p><p class="quiz-r-n"><a href="'+d.u+'">'+esc(d.n)+'</a> <small>'+esc(d.p)+'</small></p><p>'+esc(why)+'</p><p class="note on-dark">'+esc(size)+'</p>'+(big?'<p class="note on-dark">ぺこぺこなら、丼もどうぞ。'+esc(SIDE[0])+'('+esc(SIDE[1])+')。<a href="index.html#gohan">丼ものを見る</a></p>':'')+'<p><button class="btn btn-sub" id="quiz-re" type="button">もう一度</button></p>';
       document.getElementById('quiz-re').onclick=function(){ans=[];qi=0;qrender();};
       return;
     }
