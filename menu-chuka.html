@@ -592,6 +592,15 @@ footer{background:var(--ink-2)}
 .rk b{font-family:var(--mincho)}
 .as-chip{cursor:default;pointer-events:none;min-height:44px}
 
+/* 改行の見た目: 1〜2文字だけ次の行に落ちないようにする */
+.ph{display:inline-block}
+h1,h2,h3{text-wrap:balance;word-break:auto-phrase}
+p,li,dd,figcaption{text-wrap:pretty;word-break:auto-phrase}
+.dl-one{max-width:820px}
+.dl-one p{max-width:560px}
+.hero-catch{font-family:var(--brush);font-size:clamp(20px,5.4vw,28px);line-height:1.5;color:var(--paper);margin:0 0 calc(var(--u)*2);text-wrap:balance}
+.hero-photo .vcatch{display:none}
+
 </style>
 <script type="application/ld+json">
 {
@@ -640,7 +649,7 @@ footer{background:var(--ink-2)}
 <section class="kodawari">
   <div class="wrap">
     <p class="sec-label rv">POINT</p>
-    <div class="pts one"><div class="pt rv"><h3>煮干しの旨みと香りを、まっすぐ</h3><p>最高級の伊吹いりこで炊いたスープ。煮干しのエグみを抑えて、旨みと香りが立つ味にしています。濃厚淡麗よりもあっさり、店の原点になっている一杯です。</p></div><div class="pt rv"><h3>チャーシューは2種類</h3><p>注文ごとに香ばしく炙る、とろとろの豚バラ。黒こしょうを効かせた、しっとり鶏むね肉。食べ比べができます。</p></div><div class="pt rv"><h3>自家製麺</h3><p>厳選した小麦を独自にブレンドして、生卵を練り込みます。スープとの相性を考えて、水分量や熟成時間も調整しています。</p></div></div>
+    <div class="pts one"><div class="pt rv"><h3><span class="ph">煮干しの旨みと香りを、</span><span class="ph">まっすぐ</span></h3><p>最高級の伊吹いりこで炊いたスープ。煮干しのエグみを抑えて、旨みと香りが立つ味にしています。濃厚淡麗よりもあっさり、店の原点になっている一杯です。</p></div><div class="pt rv"><h3><span class="ph">チャーシューは2種類</span></h3><p>注文ごとに香ばしく炙る、とろとろの豚バラ。黒こしょうを効かせた、しっとり鶏むね肉。食べ比べができます。</p></div><div class="pt rv"><h3>自家製麺</h3><p>厳選した小麦を独自にブレンドして、生卵を練り込みます。スープとの相性を考えて、水分量や熟成時間も調整しています。</p></div></div>
   </div>
 </section>
 
@@ -674,7 +683,7 @@ footer{background:var(--ink-2)}
 <section class="delivery" id="delivery">
   <div class="wrap">
     <p class="sec-label rv">ORDER</p>
-    <h2 class="rv">お店でも、家でも。</h2>
+    <h2 class="rv"><span class="ph">お店でも、</span><span class="ph">家でも。</span></h2>
     <p class="rv">お店と同じ一杯を目指して、麺・スープ・具をわけてお届けします。メニュー・価格・配達できる範囲は、各アプリの表示に従います。</p>
     <div class="dl-btns">
         <a class="btn btn-main" href="https://x.gd/QO8HN" target="_blank" rel="noopener">Uber Eatsで頼む</a>
