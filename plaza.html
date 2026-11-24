@@ -910,11 +910,22 @@ p,li,dd,figcaption{text-wrap:pretty;word-break:auto-phrase}
   var ACTS=['麺を持ち上げて、一度眺める','最初の一口は、スープから','味玉を、最後までとっておく','「ダブル」と言ってみる','レンゲを、大きく使う','ひと息つくときは、深呼吸','野方の方向に向かって一礼する','いつもより、少しだけゆっくり食べる'];
   var LUCKY_N=['2尾','4尾(「ダブル」と伝えると、無料で4尾)','3尾分の気持ち','2尾'];
 
+  var SETS=[
+    {t:'濃厚淡麗 + ねぎチャーシュー丼(350円)',m:'濃い日は、丼で受け止める。思い切った決断が、うまくいく暗示です。',u:'index.html#gohan'},
+    {t:'中華そば + 卵かけご飯(300円)',m:'やさしい一杯に、やさしい丼。肩の力が抜けて、いい連絡が来るかも。',u:'index.html#gohan'},
+    {t:'つけ麺 + 明太子丼(300円)',m:'つけ麺と明太子丼の日は、ひらめきが降りてきます。',u:'index.html#gohan'},
+    {t:'特選のどれか + ねぎチャーシュー丼(350円)',m:'ごほうびの日は、とことん。今日は、遠慮しないほうが運が上がります。',u:'index.html#gohan'},
+    {t:'ラーメン + 餃子(380円)',m:'餃子を添えると、人に会う運が上がります。誰かを誘うのも吉。',u:'index.html#menu'},
+    {t:'ラーメン + 味玉(100円)',m:'味玉をひとつ足すと、小さな当たりが来ます。',u:'index.html#menu'},
+    {t:'煮干しダブル(無料)にする',m:'煮干しダブルで、今日は声がよく通ります。',u:'index.html#menu'},
+    {t:'大盛り(無料)にする',m:'大盛りの日は、午後の粘りが違います。',u:'index.html#menu'},
+    {t:'ビール(缶400円) + 餃子 + ラーメン',m:'くぅ、最高! 今日は、この3つで一日が決まります。',u:'index.html#menu',note:'お酒は20歳になってから。飲んだあとの運転は、しないでください。'}
+  ];
   function weighted(r){var tot=0;LEVELS.forEach(function(l){tot+=l.w;});var x=r()*tot;for(var i=0;i<LEVELS.length;i++){x-=LEVELS[i].w;if(x<=0)return LEVELS[i];}return LEVELS[LEVELS.length-1];}
   function fortune(){
     var day=today(),r=rng(hash(uid()+'|'+day));
     var lv=weighted(r),dish=pick(r,DISHES);
-    return {day:day,lv:lv.n,msg:pick(r,lv.msg),dish:dish,dtext:pick(r,dish.t),color:pick(r,COLORS),act:pick(r,ACTS),lucky:pick(r,LUCKY_N)};
+    var base={day:day,lv:lv.n,msg:pick(r,lv.msg),dish:dish,dtext:pick(r,dish.t),color:pick(r,COLORS),act:pick(r,ACTS),lucky:pick(r,LUCKY_N)};base.set=pick(r,SETS);return base;
   }
   function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
 
@@ -929,7 +940,7 @@ p,li,dd,figcaption{text-wrap:pretty;word-break:auto-phrase}
       '<dl><div><dt>今日の一杯</dt><dd><a href="'+f.dish.u+'">'+esc(f.dish.n)+'</a>('+esc(f.dish.p)+')<br><small>'+esc(f.dtext)+'</small></dd></div>'+
       '<div><dt>ラッキー煮干し</dt><dd>'+esc(f.lucky)+'</dd></div>'+
       '<div><dt>ラッキーカラー</dt><dd>'+esc(f.color)+'</dd></div>'+
-      '<div><dt>ラッキー行動</dt><dd>'+esc(f.act)+'</dd></div></dl>'+
+      '<div><dt>ラッキー行動</dt><dd>'+esc(f.act)+'</dd></div>'+'<div><dt>ラッキーセット</dt><dd><a href="'+f.set.u+'">'+esc(f.set.t)+'</a><br><small>'+esc(f.set.m)+(f.set.note?'<br>'+esc(f.set.note):'')+'</small></dd></div></dl>'+
       '<p class="slip-btns"><a class="btn btn-main" href="'+url+'" target="_blank" rel="noopener">Xでシェアする</a> <a class="btn btn-sub" href="index.html#delivery">デリバリーで頼む</a></p>'+
       '</div></div>';
     slip.hidden=false;
