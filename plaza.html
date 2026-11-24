@@ -642,6 +642,16 @@ p,li,dd,figcaption{text-wrap:pretty;word-break:auto-phrase}
 .pick-rand:active{transform:translateY(2px)}
 @media (min-width:860px){.pick-rail{justify-content:center;padding:4px 0 12px;overflow:visible}.pick-card{opacity:1;transform:none;flex:0 0 320px}.pick-ui{display:none}}
 
+/* あたりスロット */
+.slotbox{max-width:420px}
+.slot{display:flex;gap:10px;justify-content:center;margin-bottom:calc(var(--u)*2)}
+.reel{width:30%;max-width:120px;aspect-ratio:3/4;background:var(--paper);color:var(--ink-2);border:4px solid var(--ink-2);box-shadow:inset 0 0 0 3px var(--gold);font-family:var(--brush);font-size:clamp(52px,16vw,76px);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;line-height:1}
+.reel.spin{background:#fff6dd;color:#8a1a1f}
+.reel.stopped{animation:reelstop .25s ease}
+.slot.win .reel{background:var(--gold);animation:winflash .5s ease 3}
+@keyframes reelstop{0%{transform:translateY(-8px)}100%{transform:none}}
+@keyframes winflash{0%,100%{filter:none}50%{filter:brightness(1.25)}}
+
 </style>
 </head>
 <body>
@@ -687,6 +697,22 @@ p,li,dd,figcaption{text-wrap:pretty;word-break:auto-phrase}
   </div>
 </section>
 
+
+<section class="toy" id="slotgame">
+  <div class="wrap">
+    <p class="sec-label rv">SLOT</p>
+    <h2 class="rv">あたりスロット</h2>
+    <p class="lead-s rv">3つ揃えば「あたり!」。止めたいリールを、タップで止めます。景品は出ません。笑って終わりです。</p>
+    <div class="game slotbox">
+      <div class="slot" id="slot" aria-live="polite">
+        <button type="button" class="reel" aria-label="リール1">あ</button>
+        <button type="button" class="reel" aria-label="リール2">た</button>
+        <button type="button" class="reel" aria-label="リール3">り</button>
+      </div>
+      <div class="game-ui"><button class="btn btn-main" id="slot-btn" type="button">回す</button><div id="slot-msg" class="game-msg" aria-live="polite"><p>回したら、止めたいリールをタップ。放っておくと、順番に止まります。</p></div></div>
+    </div>
+  </div>
+</section>
 
 <section class="toy" id="catch">
   <div class="wrap">
@@ -996,6 +1022,44 @@ p,li,dd,figcaption{text-wrap:pretty;word-break:auto-phrase}
     nf.addEventListener('submit',function(e){e.preventDefault();var n=document.getElementById('nn-name').value.trim().slice(0,10);if(!n)return;var h=hash(n);var t=A[h%A.length]+B[(h>>>8)%B.length];
       document.getElementById('nn-out').innerHTML='<p class="nn-k">あなたの二つ名</p><p class="nn-t">'+esc(t)+'</p><p class="nn-n">'+esc(n)+'</p><p><a class="btn btn-sub" href="'+xurl(n+'の二つ名は「'+t+'」でした。 #中華そばあたり #野方')+'" target="_blank" rel="noopener">Xでシェアする</a></p>';});
   }
+})();
+
+(function(){
+  try{
+    var slot=document.getElementById('slot'); if(!slot) return;
+    var reels=[].slice.call(slot.querySelectorAll('.reel')), btn=document.getElementById('slot-btn'), msg=document.getElementById('slot-msg');
+    var SYM=['あ','た','り','煮','麺','卵'];
+    var timers=[], run=[false,false,false], vals=['あ','た','り'], auto=null;
+    function xurl(t){return 'https://twitter.com/intent/tweet?text='+encodeURIComponent(t)+'&url='+encodeURIComponent(location.href.split('#')[0]);}
+    function rnd(){return SYM[Math.floor(Math.random()*SYM.length)];}
+    function setMsg(h){msg.innerHTML=h;}
+    function stop(i){
+      if(!run[i]) return; run[i]=false; clearInterval(timers[i]);
+      vals[i]=rnd(); reels[i].textContent=vals[i]; reels[i].classList.remove('spin'); reels[i].classList.add('stopped');
+      if(!run[0]&&!run[1]&&!run[2]) finish();
+    }
+    function finish(){
+      clearTimeout(auto); btn.disabled=false; btn.textContent='もう一度回す';
+      var a=vals[0],b=vals[1],c=vals[2], html, share;
+      if(a==='あ'&&b==='た'&&c==='り'){slot.classList.add('win');html='<p class="g-rank">大あたり!</p><p>「あ・た・り」が、そのまま揃いました。店名の完成です。</p>';share='あたりスロットで「あ・た・り」が揃いました。大あたり!';}
+      else if(a===b&&b===c){slot.classList.add('win');html='<p class="g-rank">あたり!</p><p>3つ揃いました。今日はいい日です。</p>';share='あたりスロットで「'+a+'」が3つ揃って、あたり!';}
+      else if(a===b||b===c||a===c){html='<p class="g-rank">おしい!</p><p>2つ揃いました。あと1つです。</p>';share='あたりスロットで、おしい!と言われました。';}
+      else {html='<p class="g-rank">はずれ</p><p>はずれでも、お店のラーメンは、あたりです。</p>';share='あたりスロットは、はずれでした。';}
+      html+='<p><a class="btn btn-sub" href="'+xurl(share+' #中華そばあたり #野方')+'" target="_blank" rel="noopener">Xでシェアする</a></p>';
+      setMsg(html);
+    }
+    function start(){
+      slot.classList.remove('win'); btn.disabled=true; btn.textContent='回転中';
+      setMsg('<p>止めたいリールを、タップ!</p>');
+      reels.forEach(function(r,i){
+        run[i]=true; r.classList.remove('stopped'); r.classList.add('spin');
+        timers[i]=setInterval(function(){r.textContent=rnd();},70+i*15);
+      });
+      auto=setTimeout(function(){[0,1,2].forEach(function(i,k){setTimeout(function(){stop(i);},k*700);});},6000);
+    }
+    btn.addEventListener('click',start);
+    reels.forEach(function(r,i){r.addEventListener('click',function(){stop(i);});});
+  }catch(e){}
 })();
 
 </script>
