@@ -1037,7 +1037,7 @@ p,li,dd,figcaption{text-wrap:pretty;word-break:auto-phrase}
   /* ---- 2. 食券機ごっこ ---- */
   var kb=document.getElementById('kenbai');
   if(kb){
-    var MENU=[['中華そば',950],['濃厚淡麗中華そば',950],['煮干しつけ麺',950],['特選中華そば',1290],['特選濃厚淡麗',1290],['特選煮干しつけ麺',1290],['極旨辛味噌らぁめん',1150],['ねぎチャーシュー丼',350],['明太子丼',300],['TKG丼',300],['ライス',180],['半ライス',130],['特製焼餃子',380],['味玉',100],['チャーシュー(トッピング)',350],['姫竹(3本)',200],['瓶ビール',600],['缶ビール',400],['烏龍ハイ',300],['レモンサワー',300],['オレンジジュース',200]];
+    var MENU=[['中華そば',950],['濃厚淡麗中華そば',950],['煮干しつけ麺',950],['特選中華そば',1290],['特選濃厚淡麗',1290],['特選煮干しつけ麺',1290],['極旨辛味噌らぁめん',1150],['ねぎチャーシュー丼',350],['明太子丼',300],['TKG丼',300],['ライス',180],['半ライス',130],['特製焼餃子',380],['味玉',100],['チャーシュー(トッピング)',350],['姫竹(3本)',200],['瓶ビール',600],['烏龍ハイ',300],['レモンサワー',300],['オレンジジュース',200]];
     var cart=[];var grid=document.getElementById('kb-grid'),tot=document.getElementById('kb-total'),lst=document.getElementById('kb-list'),out=document.getElementById('kb-out');
     grid.innerHTML=MENU.map(function(m,i){return '<button type="button" class="kb-btn" data-i="'+i+'"><span>'+esc(m[0])+'</span><b>'+m[1].toLocaleString()+'円</b></button>';}).join('');
     function rk(){var sum=0;cart.forEach(function(c){sum+=MENU[c][1];});tot.textContent=sum.toLocaleString()+'円';lst.innerHTML=cart.length?cart.map(function(c,i){return '<li>'+esc(MENU[c][0])+' <b>'+MENU[c][1].toLocaleString()+'円</b></li>';}).join(''):'<li class="kb-empty">ボタンを押して、食券を選んでください</li>';}
