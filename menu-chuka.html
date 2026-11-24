@@ -613,6 +613,15 @@ p,li,dd,figcaption{text-wrap:pretty;word-break:auto-phrase}
 .breath-t{position:absolute;left:0;right:0;bottom:calc(var(--u)*5);z-index:2;text-align:center;font-family:var(--brush);font-size:clamp(26px,7vw,44px);line-height:1.5;color:#fff;padding:0 16px;text-shadow:0 2px 14px rgba(0,0,0,.6)}
 @media (min-width:860px){.breath{height:86vh}.breath img{object-position:50% 38%}.sp-only{display:none}}
 
+/* 商品ページごとに色を変える(ブルボンなど、商品ごとに色が違うLPから借りた) */
+.sub.theme-chuka .sub-fv{background:#4a2410}
+.sub.theme-nodo .sub-fv{background:#0f2f3a}
+.sub.theme-tsuke .sub-fv{background:#7d1017}
+.sub.theme-chuka .kodawari{background:#2b150a}
+.sub.theme-nodo .kodawari{background:#0a1d25}
+.sub.theme-tsuke .kodawari{background:#4a0b0f}
+.sub .sub-fv .sub-img{box-shadow:0 20px 50px rgba(0,0,0,.45)}
+
 </style>
 <script type="application/ld+json">
 {
@@ -641,7 +650,7 @@ p,li,dd,figcaption{text-wrap:pretty;word-break:auto-phrase}
   <nav class="gnav" id="gnav" aria-label="サイト内メニュー"><a href="menu-chuka.html">中華そば</a><a href="menu-nodo.html">濃厚淡麗</a><a href="menu-tsuke.html">煮干しつけ麺</a><a href="voice.html">お客様の声</a><a href="plaza.html">あたり広場</a><a href="index.html#news">お知らせ(X)</a><a href="index.html#info">お店情報・アクセス</a>
     <a class="gnav-cta" href="index.html#delivery">デリバリーで頼む</a></nav>
 </div>
-<main class="sub">
+<main class="sub theme-chuka">
 <section class="sub-fv">
   <div class="wrap sub-fv-grid">
     <div>
