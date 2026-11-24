@@ -697,6 +697,15 @@ p,li,dd,figcaption{text-wrap:pretty;word-break:auto-phrase}
 .honten h2{margin-bottom:var(--u)}
 .ht-link{color:var(--gold);white-space:nowrap}
 
+/* 本店: 写真1枚+キャッチ */
+.honten{position:relative;padding:0;background:var(--ink-2);overflow:hidden}
+.honten img{width:100%;height:62vh;min-height:340px;max-height:640px;object-fit:cover;object-position:50% 40%;display:block}
+.honten::after{content:"";position:absolute;left:0;right:0;bottom:0;height:62%;background:linear-gradient(to bottom,rgba(12,10,8,0),rgba(12,10,8,.92));pointer-events:none}
+.ht-t{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:0 16px calc(var(--u)*4)}
+.ht-t .sec-label{color:var(--gold)}
+.honten h2{margin:6px 0 0;color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.6);font-size:clamp(28px,7.4vw,48px)}
+@media (min-width:860px){.ht-t{max-width:1120px;margin:0 auto;left:50%;transform:translateX(-50%);width:100%}}
+
 </style>
 </head>
 <body>
