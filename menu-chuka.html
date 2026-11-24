@@ -652,6 +652,15 @@ p,li,dd,figcaption{text-wrap:pretty;word-break:auto-phrase}
 @keyframes reelstop{0%{transform:translateY(-8px)}100%{transform:none}}
 @keyframes winflash{0%,100%{filter:none}50%{filter:brightness(1.25)}}
 
+/* あたり風フレーム */
+.framebox{max-width:460px}
+.fr-pick{display:inline-flex;cursor:pointer}
+.fr-l{font-size:13px;letter-spacing:.12em;color:var(--mute);margin:calc(var(--u)*2) 0 6px}
+.fr-chips{display:flex;flex-wrap:wrap;gap:8px}
+.fr-chips button{font:700 15px var(--mincho);padding:10px 14px;background:transparent;color:var(--paper);border:2px solid var(--paper);cursor:pointer;min-height:44px}
+.fr-chips button.on{background:var(--gold);color:var(--ink-2);border-color:var(--gold)}
+#fr-cv{width:100%;height:auto;display:block;margin-top:calc(var(--u)*3);border:2px solid var(--line)}
+
 </style>
 <script type="application/ld+json">
 {
