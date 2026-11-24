@@ -622,6 +622,26 @@ p,li,dd,figcaption{text-wrap:pretty;word-break:auto-phrase}
 .sub.theme-tsuke .kodawari{background:#4a0b0f}
 .sub .sub-fv .sub-img{box-shadow:0 20px 50px rgba(0,0,0,.45)}
 
+/* 今日はどれ食べる?(カップヌードルの「選べる」型を借りた) */
+.pick{background:var(--red);color:#fff;padding:calc(var(--u)*7) 0 calc(var(--u)*6);overflow:hidden}
+.pick-q{font-family:var(--brush);font-size:clamp(34px,9vw,60px);line-height:1.2;margin-bottom:calc(var(--u)*3);text-align:center}
+.pick-rail{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding:4px calc(50% - 135px) 12px;scrollbar-width:none}
+.pick-rail::-webkit-scrollbar{display:none}
+.pick-card{flex:0 0 270px;scroll-snap-align:center;background:var(--paper);color:var(--ink-2);border:3px solid var(--ink-2);text-decoration:none;display:flex;flex-direction:column;padding:12px 12px 16px;transition:transform .3s ease,opacity .3s ease;opacity:.6;transform:scale(.92)}
+.pick-card.on{opacity:1;transform:scale(1)}
+.pick-card img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.pc-n{font-family:var(--mincho);font-size:22px;margin-top:10px}
+.pc-p{font-family:var(--brush);font-size:34px;color:var(--red);line-height:1.2}
+.pc-d{font-size:14px;line-height:1.6;margin:4px 0 12px;min-height:44px}
+.pc-go{background:var(--ink-2);color:var(--gold);text-align:center;font-weight:700;padding:12px;letter-spacing:.1em}
+.pick-ui{display:flex;justify-content:center;align-items:center;gap:16px;margin-top:calc(var(--u)*2)}
+.pick-hint{font-size:13px;letter-spacing:.1em;animation:nudge 1.6s ease-in-out infinite}
+@keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(6px)}}
+.pick-dots{display:flex;gap:8px}.pick-dots i{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.4)}.pick-dots i.on{background:#fff}
+.pick-rand{display:block;margin:calc(var(--u)*3) auto 0;background:var(--gold);color:var(--ink-2);border:3px solid var(--ink-2);font:700 17px var(--mincho);padding:12px 28px;cursor:pointer;min-height:48px}
+.pick-rand:active{transform:translateY(2px)}
+@media (min-width:860px){.pick-rail{justify-content:center;padding:4px 0 12px;overflow:visible}.pick-card{opacity:1;transform:none;flex:0 0 320px}.pick-ui{display:none}}
+
 </style>
 <script type="application/ld+json">
 {
@@ -748,6 +768,26 @@ p,li,dd,figcaption{text-wrap:pretty;word-break:auto-phrase}
   if(!b||!n)return;
   b.addEventListener('click',function(){var o=n.classList.toggle('open');b.setAttribute('aria-expanded',o);document.body.style.overflow=o?'hidden':'';});
   n.addEventListener('click',function(e){if(e.target.tagName==='A'){n.classList.remove('open');b.setAttribute('aria-expanded','false');document.body.style.overflow='';}});
+})();
+
+(function(){
+  try{
+    var rail=document.getElementById('pickRail'); if(!rail) return;
+    var cards=[].slice.call(rail.querySelectorAll('.pick-card')), dots=[].slice.call(document.querySelectorAll('#pickDots i'));
+    function cur(){var c=rail.getBoundingClientRect(), mid=c.left+c.width/2, best=0, bd=1e9;
+      cards.forEach(function(el,i){var r=el.getBoundingClientRect(), d=Math.abs(r.left+r.width/2-mid); if(d<bd){bd=d;best=i}}); return best}
+    function mark(){var i=cur(); cards.forEach(function(el,k){el.classList.toggle('on',k===i)}); dots.forEach(function(d,k){d.classList.toggle('on',k===i)})}
+    function go(i){var el=cards[i], c=rail.getBoundingClientRect(), r=el.getBoundingClientRect();
+      rail.scrollBy({left:(r.left+r.width/2)-(c.left+c.width/2),behavior:'smooth'})}
+    rail.addEventListener('scroll',function(){window.requestAnimationFrame(mark)},{passive:true});
+    window.addEventListener('resize',mark); mark();
+    var btn=document.getElementById('pickRand');
+    if(btn) btn.addEventListener('click',function(){
+      var n=cards.length, now=cur(), k=0, steps=n*2+Math.floor(Math.random()*n), pick=(now+steps)%n, i=0;
+      btn.disabled=true;
+      (function tick(){go((now+i+1)%n); i++; if(i<steps){setTimeout(tick,i<steps-3?220:420)} else {btn.disabled=false; btn.textContent='これに決まり!もう一度?'}})();
+    });
+  }catch(e){}
 })();
 
 </script>
